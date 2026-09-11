@@ -1,0 +1,27 @@
+<%- include('partials/header') %>
+
+<a href="/problems" class="back-link">&larr; All problems</a>
+
+<h1><%= problem.title %> <span class="badge badge-<%= problem.difficulty.toLowerCase() %>"><%= problem.difficulty %></span></h1>
+<p><%= problem.description %></p>
+
+<h3>Requirements</h3>
+<ul>
+  <% problem.requirements.forEach(function(req) { %>
+    <li><%= req %></li>
+  <% }); %>
+</ul>
+
+<form action="/problems/<%= problem._id %>/submit" method="POST" class="submit-form">
+  <label for="designText">Your design (classes, interfaces, key methods, or pseudocode)</label>
+  <textarea
+    id="designText"
+    name="designText"
+    rows="18"
+    placeholder="e.g. class ParkingLot { ... } / class Spot { ... } — describe your classes, relationships, and key methods"
+    required
+  ></textarea>
+  <button type="submit">Submit for Feedback</button>
+</form>
+
+<%- include('partials/footer') %>

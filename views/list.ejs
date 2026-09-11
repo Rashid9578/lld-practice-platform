@@ -1,0 +1,18 @@
+<%- include('partials/header') %>
+
+<h1>Practice Problems</h1>
+<p class="subtitle">Pick a problem, submit your design, and get instant feedback.</p>
+
+<div class="problem-grid">
+  <% problems.forEach(function(problem) { %>
+    <a href="/problems/<%= problem._id %>" class="problem-card">
+      <div class="problem-card-top">
+        <h2><%= problem.title %></h2>
+        <span class="badge badge-<%= problem.difficulty.toLowerCase() %>"><%= problem.difficulty %></span>
+      </div>
+      <p><%= problem.description %></p>
+    </a>
+  <% }); %>
+</div>
+
+<%- include('partials/footer') %>

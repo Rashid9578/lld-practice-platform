@@ -1,0 +1,16 @@
+<%- include('partials/header') %>
+
+<a href="/problems" class="back-link">&larr; All problems</a>
+
+<h1>Feedback: <%= submission.problem.title %></h1>
+<p class="status status-<%= submission.status %>">Status: <%= submission.status %></p>
+
+<h3>Your Submission</h3>
+<pre class="submission-box"><%= submission.designText %></pre>
+
+<h3>Feedback</h3>
+<pre class="feedback-box"><%= submission.feedback %></pre>
+
+<a href="/problems/<%= submission.problem._id %>" class="button-link">Try Again</a>
+
+<%- include('partials/footer') %>
