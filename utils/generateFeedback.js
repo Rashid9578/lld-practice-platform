@@ -1,7 +1,12 @@
-const fetch = require('node-fetch');
+const OpenAI = require('openai');
+
+const client = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+});
 
 /**
- * Sends the user's design submission to Claude and asks for structured LLD feedback.
+ * Sends the user's design submission to OpenAI
+ * and asks for structured LLD feedback.
  * Returns a feedback string (markdown-ish) to store and render.
  */
 async function generateFeedback(problem, designText) {
@@ -25,28 +30,17 @@ Evaluate the submission and respond with:
 
 Keep the response concise and actionable, formatted in plain markdown.`;
 
-  const response = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': process.env.ANTHROPIC_API_KEY,
-      'anthropic-version': '2023-06-01'
-    },
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-6',
-      max_tokens: 800,
-      messages: [{ role: 'user', content: prompt }]
-    })
-  });
+  try {
+    const response = await client.responses.create({
+      model: 'gpt-5-mini',
+      input: prompt,
+      max_output_tokens: 800
+    });
 
-  if (!response.ok) {
-    const errText = await response.text();
-    throw new Error(`Claude API error: ${response.status} ${errText}`);
+    return response.output_text || 'No feedback generated.';
+  } catch (error) {
+    throw new Error(`OpenAI API error: ${error.message}`);
   }
-
-  const data = await response.json();
-  const textBlock = data.content.find((block) => block.type === 'text');
-  return textBlock ? textBlock.text : 'No feedback generated.';
 }
 
 module.exports = generateFeedback;

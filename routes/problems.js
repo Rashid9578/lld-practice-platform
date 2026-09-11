@@ -42,7 +42,8 @@ router.post('/:id/submit', async (req, res) => {
       submission.status = 'evaluated';
     } catch (aiErr) {
       console.error('AI feedback failed:', aiErr.message);
-      submission.feedback = 'Feedback generation failed. Please try again later.';
+      submission.feedback =
+  'AI feedback is currently unavailable because the OpenAI API has no available credits. Your submission was saved successfully.';
       submission.status = 'failed';
     }
 
